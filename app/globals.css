@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --bg: #070b14;
+  --panel: rgba(14, 20, 33, 0.84);
+  --panel-strong: rgba(16, 24, 39, 0.96);
+  --panel-soft: rgba(9, 14, 24, 0.72);
+  --line: rgba(148, 163, 184, 0.16);
+  --text: #e5edf9;
+  --muted: #92a3bf;
+  --accent: #63f2b0;
+  --accent-strong: #1cc978;
+  --danger: #fb7185;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: radial-gradient(circle at top, rgba(34, 197, 94, 0.11), transparent 28%), var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(99, 242, 176, 0.1), transparent 24%),
+    radial-gradient(circle at 90% 0%, rgba(59, 130, 246, 0.08), transparent 22%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(99, 242, 176, 0.28);
+  color: #ffffff;
+}
+
+.glass {
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.34);
+}
+
+.page-shell {
+  min-height: 100vh;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
