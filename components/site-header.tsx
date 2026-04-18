@@ -10,7 +10,7 @@ export async function SiteHeader() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-3 text-sm font-semibold text-white">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-400/15 text-lg text-emerald-300">
-            T
+            D
           </span>
           <span className="tracking-[0.18em] text-slate-200">DOBBY DRIVE</span>
         </Link>

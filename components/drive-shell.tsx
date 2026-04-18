@@ -147,8 +147,8 @@ export function DriveShell({
           <p className="text-xs uppercase tracking-[0.22em] text-emerald-200">Workspace</p>
           <h1 className="mt-3 text-3xl font-semibold text-white">{currentPath}</h1>
           <p className="mt-3 text-sm leading-7 text-slate-300">
-            Signed in as {user.name}. This workspace is backed by Neon Postgres and served entirely from one Next.js
-            codebase.
+            Signed in as {user.name}. Upload images, organize them into nested folders, and keep everything visible
+            only to your account.
           </p>
           <button
             type="button"
@@ -279,7 +279,7 @@ export function DriveShell({
                         <div>
                           <h3 className="font-medium text-white">{folder.name}</h3>
                           <p className="text-sm text-slate-400">
-                            {folder.childCount} folders · {folder.fileCount} items
+                            {folder.childCount} folders / {folder.fileCount} images
                           </p>
                         </div>
                       </Link>
