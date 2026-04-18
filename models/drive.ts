@@ -10,13 +10,18 @@ export type DriveBreadcrumb = {
   href: string;
 };
 
+export type DriveFolderOption = {
+  id: string;
+  label: string;
+};
+
 export type DriveFolder = {
   id: string;
   name: string;
   childCount: number;
   fileCount: number;
   totalSize: number;
-  updatedAt: Date;
+  updatedAt: string;
 };
 
 export type DriveAsset = {
@@ -26,5 +31,5 @@ export type DriveAsset = {
   size: number;
   url: string | null;
   note: string | null;
-  updatedAt: Date;
+  updatedAt: string;
 };

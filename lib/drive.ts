@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "@/lib/db";
-import type { DriveAsset, DriveBreadcrumb, DriveFolder } from "@/models/drive";
+import type { DriveAsset, DriveBreadcrumb, DriveFolder, DriveFolderOption } from "@/models/drive";
 
 export async function resolveFolderPath(userId: string, segments?: string[]) {
   if (!segments?.length) {
@@ -108,6 +108,35 @@ export async function getDriveSnapshot(userId: string, folderId: string | null) 
   }
 
   const sizeMemo = new Map<string, number>();
+  const folderMap = new Map(
+    allFolders.map((folder) => [
+      folder.id,
+      {
+        id: folder.id,
+        name: folder.name,
+        parentId: folder.parentId,
+      },
+    ]),
+  );
+
+  function getFolderLabel(targetFolderId: string): string {
+    const parts: string[] = [];
+    let cursor = folderMap.get(targetFolderId);
+
+    while (cursor) {
+      parts.unshift(cursor.name);
+      cursor = cursor.parentId ? folderMap.get(cursor.parentId) : undefined;
+    }
+
+    return parts.join(" / ");
+  }
+
+  const folderOptions: DriveFolderOption[] = allFolders
+    .map((folder) => ({
+      id: folder.id,
+      label: getFolderLabel(folder.id),
+    }))
+    .sort((left, right) => left.label.localeCompare(right.label));
 
   function getRecursiveFolderSize(targetFolderId: string): number {
     if (sizeMemo.has(targetFolderId)) {
@@ -131,7 +160,7 @@ export async function getDriveSnapshot(userId: string, folderId: string | null) 
         ({
           id: folder.id,
           name: folder.name,
-          updatedAt: folder.updatedAt,
+          updatedAt: folder.updatedAt.toISOString(),
           childCount: (childMap.get(folder.id) ?? []).length,
           fileCount: directFileCountMap.get(folder.id) ?? 0,
           totalSize: getRecursiveFolderSize(folder.id),
@@ -146,7 +175,7 @@ export async function getDriveSnapshot(userId: string, folderId: string | null) 
           size: file.size,
           note: file.note,
           url: file.url,
-          updatedAt: file.updatedAt,
+          updatedAt: file.updatedAt.toISOString(),
         }) satisfies DriveAsset,
     ),
     stats: {
@@ -155,5 +184,6 @@ export async function getDriveSnapshot(userId: string, folderId: string | null) 
       currentItems: childFolders.length + currentFiles.length,
       totalBytes: allFiles.reduce((sum, file) => sum + file.size, 0),
     },
+    folderOptions,
   };
 }

@@ -26,6 +26,7 @@ export default async function DrivePage({
       currentFolderId={resolved?.currentFolderId ?? null}
       folders={snapshot.folders}
       files={snapshot.files}
+      folderOptions={snapshot.folderOptions}
       stats={snapshot.stats}
     />
   );

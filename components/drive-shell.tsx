@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -8,13 +8,14 @@ import { FileImage, Folder, FolderPlus, ImageUp, LoaderCircle, Trash2 } from "lu
 import { toast } from "sonner";
 
 import { formatBytes, formatRelativeDate } from "@/lib/utils";
-import type { DriveAsset, DriveBreadcrumb, DriveFolder, SessionUser } from "@/models/drive";
+import type { DriveAsset, DriveBreadcrumb, DriveFolder, DriveFolderOption, SessionUser } from "@/models/drive";
 
 type DriveShellProps = {
   user: SessionUser;
   breadcrumbs: DriveBreadcrumb[];
   folders: DriveFolder[];
   files: DriveAsset[];
+  folderOptions: DriveFolderOption[];
   currentFolderId: string | null;
   stats: {
     totalFolders: number;
@@ -29,6 +30,7 @@ export function DriveShell({
   breadcrumbs,
   folders,
   files,
+  folderOptions,
   currentFolderId,
   stats,
 }: DriveShellProps) {
@@ -38,7 +40,12 @@ export function DriveShell({
   const [folderName, setFolderName] = useState("");
   const [imageName, setImageName] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [targetFolderId, setTargetFolderId] = useState(currentFolderId ?? "");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    setTargetFolderId(currentFolderId ?? "");
+  }, [currentFolderId]);
 
   const currentPath = useMemo(() => {
     return breadcrumbs.length ? breadcrumbs[breadcrumbs.length - 1]?.name : "Root";
@@ -80,7 +87,7 @@ export function DriveShell({
 
     const formData = new FormData();
     formData.append("name", imageName);
-    formData.append("folderId", currentFolderId ?? "");
+    formData.append("folderId", targetFolderId);
     formData.append("image", imageFile);
 
     const response = await fetch("/api/files", {
@@ -219,6 +226,18 @@ export function DriveShell({
               onChange={(event) => setImageFile(event.target.files?.[0] ?? null)}
               className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none transition file:mr-4 file:rounded-full file:border-0 file:bg-emerald-400 file:px-4 file:py-2 file:font-medium file:text-slate-950 hover:file:bg-emerald-300"
             />
+            <select
+              value={targetFolderId}
+              onChange={(event) => setTargetFolderId(event.target.value)}
+              className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none transition focus:border-emerald-400/50"
+            >
+              <option value="">Root folder</option>
+              {folderOptions.map((folder) => (
+                <option key={folder.id} value={folder.id}>
+                  {folder.label}
+                </option>
+              ))}
+            </select>
             <button
               type="submit"
               className="w-full rounded-full border border-white/10 px-4 py-3 text-sm font-medium text-slate-100 transition hover:border-emerald-400/50"

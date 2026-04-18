@@ -17,12 +17,14 @@ export function formatBytes(bytes: number) {
   return `${value.toFixed(value >= 10 || power === 0 ? 0 : 1)} ${units[power]}`;
 }
 
-export function formatRelativeDate(date: Date) {
+export function formatRelativeDate(date: Date | string) {
+  const parsedDate = date instanceof Date ? date : new Date(date);
+
   return new Intl.DateTimeFormat("en", {
     month: "short",
     day: "numeric",
     year: "numeric",
-  }).format(date);
+  }).format(parsedDate);
 }
 
 export function slugify(input: string) {
