@@ -1,10 +1,22 @@
 import type { Metadata } from "next";
+import { Cormorant_Garamond, Space_Grotesk } from "next/font/google";
 import { Toaster } from "sonner";
 
 import { getSession } from "@/lib/auth";
 import { SessionProvider } from "@/contexts/session-context";
 
 import "@/app/globals.css";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Dobby Drive",
@@ -20,7 +32,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className={`${spaceGrotesk.variable} ${cormorant.variable}`}>
         <SessionProvider user={session}>
           {children}
           <Toaster

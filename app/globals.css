@@ -32,7 +32,7 @@ body {
     radial-gradient(circle at 90% 0%, rgba(59, 130, 246, 0.08), transparent 22%),
     var(--bg);
   color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
 a {
@@ -65,4 +65,63 @@ select {
     linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
+}
+
+.font-editorial {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+.hero-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(99, 242, 176, 0.14), transparent 0 36%),
+    radial-gradient(circle at 76% 18%, rgba(56, 189, 248, 0.1), transparent 0 28%),
+    linear-gradient(125deg, rgba(255, 255, 255, 0.02), transparent 45%);
+  pointer-events: none;
+}
+
+.hero-beam {
+  position: absolute;
+  inset: auto auto 12% -12%;
+  width: 50rem;
+  height: 50rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(99, 242, 176, 0.18), rgba(99, 242, 176, 0.04) 36%, transparent 68%);
+  filter: blur(16px);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.float-delayed {
+  animation: float-delayed 10s ease-in-out infinite;
+}
+
+.glow-line {
+  box-shadow: 0 0 0 1px rgba(99, 242, 176, 0.08), 0 0 40px rgba(99, 242, 176, 0.12);
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes float-delayed {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 12px, 0);
+  }
 }
