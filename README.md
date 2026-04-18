@@ -59,6 +59,60 @@ Visit [http://localhost:3000](http://localhost:3000)
 3. Add `DATABASE_URL` and `JWT_SECRET` in the Vercel project settings.
 4. Run `npx prisma db push` against your Neon database once, or add it to your deployment workflow.
 
+## Bonus: MCP Server For Claude Desktop
+
+This repo now includes a local MCP server at `mcp-server.mjs` that exposes backend actions over stdio.
+
+Available tools:
+
+- `list_folders`
+- `create_folder`
+- `upload_image`
+
+### What The Tools Do
+
+- `list_folders`: returns folder ids and full nested paths for a user
+- `create_folder`: creates a folder for a user at root or inside a parent folder
+- `upload_image`: uploads a local image file into a chosen folder using Vercel Blob
+
+### Claude Desktop Setup
+
+Add this server to your Claude Desktop config. Use your real absolute path and forward slashes.
+
+Mac:
+
+```json
+{
+  "mcpServers": {
+    "dobby-drive": {
+      "command": "node",
+      "args": ["/absolute/path/to/dobby/mcp-server.mjs"]
+    }
+  }
+}
+```
+
+Windows:
+
+```json
+{
+  "mcpServers": {
+    "dobby-drive": {
+      "command": "node",
+      "args": ["D:/dobby/mcp-server.mjs"]
+    }
+  }
+}
+```
+
+Because the server loads `.env` and `.env.local` from the project root, you usually do not need to duplicate `DATABASE_URL` or `BLOB_READ_WRITE_TOKEN` inside the Claude Desktop config.
+
+### Example Prompts In Claude Desktop
+
+- `List folders for user you@example.com`
+- `Create a folder called Campaigns inside Projects for user you@example.com`
+- `Upload D:/Images/hero-shot.png into Projects/Campaigns for user you@example.com with the name Hero Shot`
+
 ## Notes
 
 - This starter stores **metadata** in Neon. If you want production-grade binary uploads next, the clean add-on is Vercel Blob or UploadThing.
